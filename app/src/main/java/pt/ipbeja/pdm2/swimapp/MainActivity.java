@@ -11,11 +11,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toast.makeText(this, "onCreate", Toast.LENGTH_SHORT).show();
-        /*Toast.makeText(this, NewsData.Headlines[0], Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "onCreate", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, NewsData.Headlines[0], Toast.LENGTH_SHORT).show();
         Toast.makeText(this, NewsData.Articles[0], Toast.LENGTH_SHORT).show();
         Toast.makeText(this, NewsData.Headlines[1], Toast.LENGTH_SHORT).show();
-        Toast.makeText(this, NewsData.Articles[1], Toast.LENGTH_SHORT).show();*/
+        Toast.makeText(this, NewsData.Articles[1], Toast.LENGTH_SHORT).show();
 
         // Check that the activity is using the layout version with
         // the fragment_container FrameLayout
