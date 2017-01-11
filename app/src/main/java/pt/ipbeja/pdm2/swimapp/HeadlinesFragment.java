@@ -47,10 +47,7 @@ public class HeadlinesFragment extends ListFragment {
 
         if (getActivity().findViewById(R.id.fragment_container) != null){
 
-            /*Toast.makeText(getActivity().getBaseContext(), "Clicked Portrait." + NewsData.Headlines[pos],
-                    Toast.LENGTH_SHORT).show();*/
-
-            Toast.makeText(getActivity().getBaseContext(), NewsData.Headlines[pos],
+            Toast.makeText(getActivity().getBaseContext(), "Clicked Portrait." + NewsData.Headlines[pos],
                     Toast.LENGTH_SHORT).show();
 
             // Create fragment and give it an argument specifying the article it should show
@@ -69,10 +66,7 @@ public class HeadlinesFragment extends ListFragment {
         }
         else{
 
-            /*Toast.makeText(getActivity().getBaseContext(), "Clicked Landscape." + NewsData.Headlines[pos],
-                    Toast.LENGTH_SHORT).show();*/
-
-            Toast.makeText(getActivity().getBaseContext(), NewsData.Headlines[pos],
+            Toast.makeText(getActivity().getBaseContext(), "Clicked Landscape." + NewsData.Headlines[pos],
                     Toast.LENGTH_SHORT).show();
 
             //TextView article = (TextView) getActivity().findViewById(R.id.article_text);
