@@ -26,4 +26,5 @@ public class HeadlinesFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_headlines, container, false);
     }
 
+
 }
