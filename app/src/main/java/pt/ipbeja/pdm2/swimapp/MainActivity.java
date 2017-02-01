@@ -1,39 +1,63 @@
 package pt.ipbeja.pdm2.swimapp;
 
-import android.app.Activity;
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.widget.Toast;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.ListFragment;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.webkit.WebView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements
+        TitlesFragment.OnTitleSelectedListener {
+
+    public int pos;
+
+    public void onProofSelected(int position) {
+
+        if (findViewById(R.id.fragment_container) != null){
+
+
+            SwimFragment musicFragment = new SwimFragment();
+            Bundle args = new Bundle();
+            args.putInt("position", position);
+            musicFragment.setArguments(args);
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_container, musicFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+
+        }
+        else{
+
+            SwimFragment swimFrag = (SwimFragment)
+                    getSupportFragmentManager().findFragmentById(R.id.swim_fragment);
+            swimFrag.updateDescriptionView(position);
+
+        }
+
+        pos = position;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Toast.makeText(this, "onCreate", Toast.LENGTH_SHORT).show();
-        /*Toast.makeText(this, NewsData.Headlines[0], Toast.LENGTH_SHORT).show();
-        Toast.makeText(this, NewsData.Articles[0], Toast.LENGTH_SHORT).show();
-        Toast.makeText(this, NewsData.Headlines[1], Toast.LENGTH_SHORT).show();
-        Toast.makeText(this, NewsData.Articles[1], Toast.LENGTH_SHORT).show();*/
-
         // Check that the activity is using the layout version with
         // the fragment_container FrameLayout
         if (findViewById(R.id.fragment_container) != null) {
 
-            // However, if we're being restored from a previous state,
-            // then we don't need to do anything and should return or else
-            // we could end up with overlapping fragments.
-            if (savedInstanceState != null) {
-                return;
+            if( savedInstanceState == null) {
+                //Initialize();
+                //NewsData.ListArticles();
+
+            /*Log.d("MainActivity:",
+                    Integer.toString(NewsData.GetNumberOfArticles()));*/
             }
 
             // Create a new Fragment to be placed in the activity layout
-            HeadlinesFragment firstFragment = new HeadlinesFragment();
+            TitlesFragment firstFragment = new TitlesFragment();
 
             // In case this activity was started with special instructions from an
             // Intent, pass the Intent's extras to the fragment as arguments
@@ -46,36 +70,36 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-//    public void onArticleSelected(int position) {
-//        // The user selected the headline of an article from the HeadlinesFragment
-//        // Do something here to display that article
-//
-//        ArticleFragment articleFrag = (ArticleFragment)
-//                getSupportFragmentManager().findFragmentById(R.id.article_fragment);
-//
-//        if (articleFrag != null) {
-//            // If article frag is available, we're in two-pane layout...
-//
-//            // Call a method in the ArticleFragment to update its content
-//            articleFrag.updateArticleView(position);
-//        } else {
-//            // Otherwise, we're in the one-pane layout and must swap frags...
-//
-//            // Create fragment and give it an argument for the selected article
-//            ArticleFragment newFragment = new ArticleFragment();
-//            Bundle args = new Bundle();
-//            args.putInt("position", position);
-//            newFragment.setArguments(args);
-//
-//            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//
-//            // Replace whatever is in the fragment_container view with this fragment,
-//            // and add the transaction to the back stack so the user can navigate back
-//            transaction.replace(R.id.fragment_container, newFragment);
-//            transaction.addToBackStack(null);
-//
-//            // Commit the transaction
-//            transaction.commit();
-//        }
-//    }
+    //public void Initialize(){
+        //DBHelper db = new DBHelper(this);
+        //db.insertProofs(SwimData.Titles, SwimData.Description, );
+    //}
+
+    @Override
+    protected void onStart(){
+        super.onStart();
+    }
+
+    public void btnGps_onClick(View view) {
+        Intent map = new Intent(MainActivity.this, GpsActivity.class);
+        map.putExtra("gps", SwimData.Gps[pos]);
+        startActivity(map);
+    }
+
+    public void btnCall_onClick(View view) {
+        Uri number = Uri.parse("tel:214 158 190");
+        Intent callIntent = new Intent(Intent.ACTION_DIAL, number);
+        startActivity(callIntent);
+    }
+
+    public void btnEmail_onClick(View view) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/html");
+        intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                "mailto","secretaria@fpnatacao.pt", null));
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Inscrição numa prova de natação");
+        intent.putExtra(Intent.EXTRA_TEXT, "Vim por este meio inscrever-me numa prova.");
+
+        startActivity(Intent.createChooser(intent, "Report Problem"));
+    }
 }
