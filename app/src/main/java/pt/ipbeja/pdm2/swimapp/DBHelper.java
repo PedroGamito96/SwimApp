@@ -15,13 +15,11 @@ import java.util.List;
 
 public class DBHelper extends SQLiteOpenHelper {
 
-    //--------------------------------- TABLES ---------------------------------//
     private static final int I_PROOFS = 0;
     private static final String[] TableNames = {
             "proofs"
     };
 
-    //--------------------------------- ANIMALS TABLE ---------------------------------//
     private static final String T_PROOFS_ID = "_id_proof";
     private static final String T_PROOFS_NAME = "name_proof";
     private static final String T_PROOFS_DESCRIPTION = "description_proof";
@@ -32,19 +30,15 @@ public class DBHelper extends SQLiteOpenHelper {
             "CREATE TABLE " + TableNames[I_PROOFS] + "(" +
                     T_PROOFS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     T_PROOFS_NAME + " TEXT , " +
-                    T_PROOFS_DESCRIPTION + " TEXT, " +
-                    T_PROOFS_PHOTO + " TEXT , " +
+                    T_PROOFS_DESCRIPTION + " TEXT , " +
+                    T_PROOFS_PHOTO + " INTEGER , " +
                     T_PROOFS_GPS + " TEXT)";
 
-    //--------------------------------- CREATE TABLES ---------------------------------//
     private static final String[] T_CREATE = {
             T_CREATE_PROOFS};
 
-    //-------------------------------------- END --------------------------------------//
-
-
     private static final String DB_FILENAME = "Proofs.db";
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 9;
     private static final SQLiteDatabase.CursorFactory factory = null;
 
     public DBHelper(Context context) {
@@ -66,13 +60,7 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    //--------------------------------- Animals ---------------------------------//
-
-    public void insertProofs(String name, String description, String photo, String gps) {
-
-        //for(int i = 0; i)
-        //SwimData.Titles
-
+    public void insertProofs(String name, String description, int photo, String gps) {
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -116,15 +104,15 @@ public class DBHelper extends SQLiteOpenHelper {
         return res;
     }
 
-    public List<String> getAllPhotos() {
-        List<String> res = new ArrayList<>();
+    public List<Integer> getAllPhotos() {
+        List<Integer> res = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         String sql = "SELECT " + T_PROOFS_PHOTO + " FROM " + TableNames[I_PROOFS];
 
         Cursor cursor = db.rawQuery(sql, null);
         if (cursor.moveToFirst()) {
             do {
-                String id = cursor.getString(cursor.getColumnIndex(T_PROOFS_PHOTO));
+                int id = cursor.getInt(cursor.getColumnIndex(T_PROOFS_PHOTO));
                 res.add(id);
             } while (cursor.moveToNext());
         }
